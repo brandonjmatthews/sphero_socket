@@ -2,6 +2,8 @@ import asyncio
 import websockets
 import json
 
+from spherov2.toy.r2d2 import R2D2
+
 async def handle_status(websocket, message:dict):
     match message['status']:
         case 'connected':
@@ -10,6 +12,10 @@ async def handle_status(websocket, message:dict):
                 'r': 255,
                 'g': 0,
                 'b': 255
+            }))
+            await websocket.send(json.dumps({
+                'command':'play_r2_sound',
+                'sound': R2D2.Audio.R2_ANNOYED
             }))
 
 async def main():

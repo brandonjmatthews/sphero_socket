@@ -8,6 +8,7 @@ import websockets.sync.server
 from spherov2 import scanner
 from spherov2.sphero_edu import SpheroEduAPI
 from spherov2.types import Color
+from spherov2.toy.r2d2 import R2D2
 
 # Event to handle server shutdown
 shutdown_event = threading.Event()
@@ -88,11 +89,9 @@ def handle_command(message: dict, robot, websocket):
             g = message['g']
             b = message['b']
             robot.set_main_led(Color(r, g, b))
-        case 'set_main_led':
-            r = message['r']
-            g = message['g']
-            b = message['b']
-            robot.set_main_led(Color(r, g, b))
+        case 'play_r2_sound':
+            sound = message['sound']
+            robot.play_sound(R2D2.Audio(sound))
         case _:
             print(f"Command {message.get('command')} is unhandled")
 
