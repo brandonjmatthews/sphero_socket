@@ -1,0 +1,4 @@
+asyncio==3.4.3
+spherov2>=0.12.1
+websockets>=15.0
+bleak>=0.22.3
