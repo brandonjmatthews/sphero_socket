@@ -170,7 +170,7 @@ def random_action(robot):
 
 def start_server():
     """Starts the synchronous WebSocket server."""
-    server = websockets.sync.server.serve(handle_client, "localhost", 8765)
+    server = websockets.sync.server.serve(handle_client, "0.0.0.0", 8765)
     server.serve_forever()
 
 def stop_server(signal_received, frame):
@@ -184,7 +184,7 @@ if __name__ == "__main__":
     # Capture SIGINT to stop the server gracefully
     signal.signal(signal.SIGINT, stop_server)
 
-    print("Starting WebSocket server on ws://localhost:8765")
+    print("Starting WebSocket server on ws://0.0.0.0:8765")
     server_thread = threading.Thread(target=start_server, daemon=True)
     server_thread.start()
 
