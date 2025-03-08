@@ -13,9 +13,13 @@ async def handle_status(websocket, message:dict):
                 'g': 0,
                 'b': 255
             }))
+            #await websocket.send(json.dumps({
+            #    'command':'play_sound',
+            #    'sound': R2D2.Audio.R2_ANNOYED
+            #}))
             await websocket.send(json.dumps({
-                'command':'play_r2_sound',
-                'sound': R2D2.Audio.R2_ANNOYED
+                'command':'play_animation',
+                'animation': R2D2.Animations.WWM_ANGRY
             }))
 
 async def main():

@@ -31,11 +31,11 @@ def action_dome_and_leds_chatty(robot):
 
     robot.play_sound(get_random_enum_in_range(R2D2.Audio, 3302, 3478)), # r2 positive
 
-    change_mode = random.uniform(0.0, 1.0)
-    if change_mode < 0.1:
-        robot.set_stance(Stance.Bipod)
-    if change_mode > 0.9:
-        robot.set_stance(Stance.Tripod)
+    # change_mode = random.uniform(0.0, 1.0)
+    # if change_mode < 0.1:
+    #     robot.set_stance(Stance.Bipod)
+    # if change_mode > 0.9:
+    #     robot.set_stance(Stance.Tripod)
 
 
 def get_random_enum_in_range(enum_cls, min_val, max_val):
@@ -91,6 +91,7 @@ def listen_for_commands(websocket, robot):
                 # Wait for a message with a timeout, so we can check shutdown_event
                 message = websocket.recv(timeout=0.5)
                 message_dict = json.loads(message)
+                print(f"Received command: {message}")
                 handle_command(message_dict, robot, websocket)
 
             except asyncio.TimeoutError:
@@ -131,7 +132,10 @@ def handle_command(message: dict, robot, websocket):
             g = message['g']
             b = message['b']
             robot.set_back_led(Color(r, g, b))
-        case 'play_r2_sound':
+        case 'set_projector':
+            level = message['level']
+            robot.set_holo_projector_led(level)
+        case 'play_sound':
             sound = message['sound']
             robot.play_sound(R2D2.Audio(sound))
         case 'set_stance_bipod':
@@ -145,11 +149,12 @@ def handle_command(message: dict, robot, websocket):
                 robot.set_dome_position(pos)
         case 'play_animation':
             animation = message['animation']
-            robot.play_animation(R2D2.Animation(animation))
+            print(R2D2.Animations(animation))
+            robot.play_animation(R2D2.Animations(animation))
         case _:
             print(f"Command {message.get('command')} is unhandled")
 
-def action_probability(elapsed_time, scale=30):
+def action_probability(elapsed_time, scale=240):
     """Probability increases with elapsed time."""
     return min(1, elapsed_time / scale)  # Caps at 1
 
